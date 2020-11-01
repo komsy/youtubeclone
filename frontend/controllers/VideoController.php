@@ -59,9 +59,17 @@ public function actionView($id)
         $videoView->user_id= \yii::$app->user->id;
         $videoView->created_at= time();
         $videoView->save();
-      
+
+        $similarVideos= Videos::find()
+        ->published()
+        ->andwhere(['NOT', ['video_id'=>$id]])
+        ->byKeyword($video->title)
+        ->limit(10)
+        ->all();
+
         return $this->render('view', [
-        'model'=>$video
+        'model'=>$video,
+        'similarVideos'=> $similarVideos
     
 ]);
 
@@ -124,12 +132,16 @@ public function actionDislike($id)
 }
 
 public function actionSearch($keyword)
-{
-    $dataProvider = new ActiveDataProvider([
-        'query'=>Videos::find()
+{ 
+    $query= Videos::find()
         ->published()
-        ->latest()
-        ->byKeyword($keyword) 
+        ->latest();
+    if($keyword){
+        $query->byKeyword($keyword);
+    }
+
+    $dataProvider = new ActiveDataProvider([
+        'query'=>$query
     ]);
 
     return $this->render('search',[
