@@ -20,7 +20,7 @@ class VideoController extends \yii\web\Controller
         return [
             'access'=>[
                 'class'=> AccessControl::class,
-                'only'=>['like','dislike'],
+                'only'=>['like','dislike', 'history'],
                 'rules'=>[
                     [
                         'allow'=>true,
@@ -40,8 +40,12 @@ class VideoController extends \yii\web\Controller
     
     public function actionIndex()
     {
+        $this->layout= 'main';
         $dataProvider = new ActiveDataProvider([
-            'query'=>Videos::find()->published()->latest()
+            'query'=>Videos::find()->with('createdBy')->published()->latest(),
+            'pagination' => [
+                'pageSize'=>5
+            ]
         ]);
         return $this->render('index',[
             'dataProvider'=>$dataProvider,
@@ -133,7 +137,9 @@ public function actionDislike($id)
 
 public function actionSearch($keyword)
 { 
+    $this->layout= 'main';
     $query= Videos::find()
+        ->with('createdBy')
         ->published()
         ->latest();
     if($keyword){
@@ -149,6 +155,28 @@ public function actionSearch($keyword)
     ]);
 }
 
+public function actionHistory()
+{
+    $this->layout= 'main';
+    $query= Videos::find()
+        ->alias('v')
+        ->innerJoin("(SELECT video_id, MAX(created_at) as max_date FROM video_view 
+            WHERE user_id= :userId
+            GROUP BY video_id) vv", 'vv.video_id= v.video_id', [
+                'userId'=> \Yii::$app->user->id] )
+
+        ->orderBy("vv.max_date DESC");
+    
+
+    $dataProvider = new ActiveDataProvider([
+        'query'=>$query
+    ]);
+
+    return $this->render('history',[
+        'dataProvider'=>$dataProvider,
+    ]);
+
+}
 
 protected function findVideo($id)
 {

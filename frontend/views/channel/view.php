@@ -28,6 +28,9 @@ use yii\widgets\ListView;
 
 <?=ListView::widget([
     'dataProvider'=>$dataProvider,
+    'pager'=>[
+    	'class'=> \yii\bootstrap4\LinkPager::class
+    ],
     'itemView'=>'@frontend/views/video/video-item',
     'layout'=>'<div class="d-flex">{items}</div>{pager}',
     'itemOptions'=>[

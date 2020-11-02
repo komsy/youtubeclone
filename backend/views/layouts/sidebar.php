@@ -8,13 +8,16 @@ use yii\bootstrap4\Nav;
         'options' => [
             'class' => 'd-flex flex-column nav-pills'
         ],
+
+        'encodeLabels'=>false,
+
         'items' => [
             [
-                'label'=>'Dashboard',
+                'label'=>'<i class="fas fa-tachometer-alt"></i> Dashboard',
                 'url'=>['/site/index']
             ],
             [
-                'label'=>'Videos',
+                'label'=>'<i class="fas fa-video-slash"></i> Videos',
                 'url'=>['/videos/index']
             ]
         ]

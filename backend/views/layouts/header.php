@@ -11,13 +11,15 @@ use yii\bootstrap4\Nav;
             'class'=>'shadow-sm navbar navbar-expand-lg navbar-light bg-light'
         ]
     ]);
+
+  
     $menuItems = [
-        ['label' => 'Create', 'url' => ['/videos/create']],
+        ['label' => 'Create <i class="fas fa-plus-circle"></i>', 'url' => ['/videos/create']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'Login <i class="fas fa-sign-in-alt"></i>', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Logout('.Yii::$app->user->identity->username.')',
+        $menuItems[] = ['label' => 'Logout <i class="fas fa-sign-out-alt"></i> ('.Yii::$app->user->identity->username.')',
             'url'=>['site/logout'],
             'linkOptions'=>[
                 'data-method'=>'post'
@@ -27,6 +29,7 @@ use yii\bootstrap4\Nav;
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ml-auto'],
         'items' => $menuItems,
+          'encodeLabels'=>false,
     ]);
     NavBar::end();
     ?>

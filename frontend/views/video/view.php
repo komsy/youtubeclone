@@ -42,7 +42,8 @@ use common\models\video;
 </div>
 	<div class="col-sm-4">
 		<?php foreach ($similarVideos as $similarVideo): ?>	
-		<div class="media">
+
+		<div class="media mb-3">
 		<a href="<?= Url::to(['/video/view', 'id'=> $similarVideo->video_id])?>">
 			
 			<div class="embed-responsive embed-responsive-16by9 mr-2" style="width: 250px">

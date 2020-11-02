@@ -16,10 +16,10 @@ use yii\bootstrap4\Nav;
         ]
     ]);
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'Signup <i class="fas fa-user-plus"></i>', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Login <i class="fas fa-sign-in-alt"></i>', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Logout('.Yii::$app->user->identity->username.')',
+        $menuItems[] = ['label' => 'Logout <i class="fas fa-sign-out-alt"></i> ('.Yii::$app->user->identity->username.')',
             'url'=>['site/logout'],
             'linkOptions'=>[
                 'data-method'=>'post'
@@ -38,6 +38,7 @@ use yii\bootstrap4\Nav;
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ml-auto'],
         'items' => $menuItems,
+          'encodeLabels'=>false,
     ]);
     NavBar::end();
     ?>
